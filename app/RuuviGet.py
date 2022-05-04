@@ -8,12 +8,12 @@ class RuuviGet:
 
         results = []
         counter = 10
+
         # RunFlag for stopping execution at desired time
         run_flag = RunFlag()
 
         def handle_data(found_data):
             results.append(found_data)
-            global counter
             counter = counter - 1
             if counter < 0:
                 run_flag.running = False
