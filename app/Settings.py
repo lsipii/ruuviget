@@ -15,7 +15,7 @@ class Settings:
                 parts = list_items
                 self.__validate_list(parts, list_item_type)
                 return parts
-            elif isinstance(list_items, str) and list_items.find(",") > -1:
+            elif isinstance(list_items, str):
                 parts = parse_comma_separated_text_list(list_items)
                 self.__validate_list(parts, list_item_type)
                 return parts
