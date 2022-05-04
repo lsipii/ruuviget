@@ -20,8 +20,8 @@ def base_controller(path=None):
                 return app.generateResponse(result)
         except Exception:
             traceback.print_exc()
-            return app.getErrorResponse(app)
-    return app.getBadAPIGatewayResponse(app)
+            return app.getErrorResponse()
+    return app.getBadAPIGatewayResponse()
 
 
 def execute():
