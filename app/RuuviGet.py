@@ -49,7 +49,7 @@ class RuuviGet:
             self.__run_flag.running = False
 
     def __if_valid_data(self, found_data: list) -> bool:
-        return isinstance(found_data, list) and len(found_data) == 2
+        return isinstance(found_data, list) and len(found_data) >= 2
 
     def __data_formatter(self, found_data: list) -> dict:
         build = found_data[1]
