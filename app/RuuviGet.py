@@ -1,4 +1,3 @@
-import ruuvitag_sensor
 from ruuvitag_sensor.ruuvi import RuuviTagSensor
 
 

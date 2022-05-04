@@ -1,9 +1,8 @@
 import traceback
-from flask import Flask, request
+from app.Flasker import Flasker
 from app.RuuviGet import RuuviGet
-from app.responses import responses
 
-app = Flask(__name__)
+app = Flasker(__name__)
 
 """
 The HTTP server request handlers
@@ -14,21 +13,15 @@ The HTTP server request handlers
 def ruuvigetController(path=None):
 
     if isinstance(path, str):
-
-        requestData = {}
-        try:
-            requestData = request.json
-        except Exception:
-            pass
-
+        request_data = app.getRequestInput()
         try:
             if path == "ruuviget":
-                result = RuuviGet().execute(requestData)
-                return responses.generateFlaskResponse(app, result, 200)
+                result = RuuviGet().execute(request_data)
+                return app.generateResponse(result)
         except Exception:
             traceback.print_exc()
-            return responses.getErrorResponse(app)
-    return responses.getBadAPIGatewayResponse(app)
+            return app.getErrorResponse(app)
+    return app.getBadAPIGatewayResponse(app)
 
 
 if __name__ == "__main__":
