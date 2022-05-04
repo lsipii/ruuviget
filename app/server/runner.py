@@ -1,6 +1,6 @@
 import traceback
-from app.Flasker import Flasker
-from app.RuuviGet import RuuviGet
+from app.server.Flasker import Flasker
+from app.server.RuuviGetator import RuuviGetator
 
 app = Flasker(__name__)
 
@@ -20,7 +20,7 @@ def base_controller(path=None):
         request_data = app.getRequestInput()
         try:
             if path == "ruuviget":
-                result = RuuviGet().execute(request_data)
+                result = RuuviGetator().execute(request_data)
                 return app.generateResponse(result)
         except Exception:
             traceback.print_exc()

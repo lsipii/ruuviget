@@ -1,5 +1,5 @@
 from tokenize import Number
-from app.Settings import Settings
+from app.utils.Settings import Settings
 from ruuvitag_sensor.ruuvi import RuuviTagSensor, RunFlag
 
 dummy_data_set = [
@@ -44,7 +44,7 @@ dummy_data_set = [
 ###
 # @see: https://github.com/ttu/ruuvitag-sensor
 ###
-class RuuviGet:
+class RuuviGetator:
     def execute(self, requestData: dict) -> list:
         self.__initialize(requestData)
         self.__fetch_data()
