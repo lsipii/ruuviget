@@ -7,6 +7,10 @@ app = Flasker(__name__)
 """
 The HTTP server request handlers
 """
+# Base fallback
+@app.route("/", methods=["GET", "POST"])
+def noNothingController(path=None):
+    return app.getBadAPIGatewayResponse()
 
 
 @app.route("/<path>", methods=["GET", "POST"])
