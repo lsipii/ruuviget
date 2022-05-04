@@ -2,6 +2,45 @@ from tokenize import Number
 from app.Settings import Settings
 from ruuvitag_sensor.ruuvi import RuuviTagSensor, RunFlag
 
+dummy_data_set = [
+    [
+        "A1:CD:EF:GH:IJ:K1",
+        {
+            "data_format": 5,
+            "humidity": 20.59,
+            "temperature": 23.78,
+            "pressure": 1004.29,
+            "acceleration": 1009.1501374919393,
+            "acceleration_x": 4,
+            "acceleration_y": -48,
+            "acceleration_z": 1008,
+            "tx_power": 4,
+            "battery": 3013,
+            "movement_counter": 20,
+            "measurement_sequence_number": 10271,
+            "mac": "a1cdefghijk1",
+        },
+    ],
+    [
+        "A1:CD:EF:GH:IJ:K9",
+        {
+            "data_format": 5,
+            "humidity": 18.33,
+            "temperature": 20.95,
+            "pressure": 1004.43,
+            "acceleration": 988.2347899158377,
+            "acceleration_x": -8,
+            "acceleration_y": -20,
+            "acceleration_z": 988,
+            "tx_power": 4,
+            "battery": 2978,
+            "movement_counter": 104,
+            "measurement_sequence_number": 10095,
+            "mac": "a1cdefghijk9",
+        },
+    ],
+]
+
 ###
 # @see: https://github.com/ttu/ruuvitag-sensor
 ###
@@ -33,7 +72,12 @@ class RuuviGet:
         return Settings().get_list("MAC_ADDRESSES", str)
 
     def __fetch_data(self):
-        RuuviTagSensor.get_datas(self.__handle_data, self.__macs, self.__run_flag)
+        if Settings().get_boolean("RUUVI_DUMMY_DATA_MODE"):
+            for dummyData in dummy_data_set:
+                self.__handle_data(dummyData)
+            self.__send_stop_signal()
+        else:
+            RuuviTagSensor.get_datas(self.__handle_data, self.__macs, self.__run_flag)
 
     def __handle_data(self, found_data):
         # Set data
@@ -43,9 +87,12 @@ class RuuviGet:
         # Set stop condition
         if isinstance(self.__macs, list) and len(self.__macs) > 0:
             if len(self.__results) >= len(self.__macs):
-                self.__run_flag.running = False
+                self.__send_stop_signal()
         if self.__max_seconds_counter < 0:
-            self.__run_flag.running = False
+            self.__send_stop_signal()
+
+    def __send_stop_signal(self):
+        self.__run_flag.running = False
 
     def __get_results(self):
         return self.__results.copy()

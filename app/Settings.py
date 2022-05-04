@@ -3,12 +3,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-from app.data_structures import parse_comma_separated_text_list, singleton
+from app.utils.data_structures import singleton
+from app.utils.value_parsers import parse_boolean, parse_comma_separated_text_list
 
 
 @singleton
 class Settings:
     def get_list(self, setting_name: str, list_item_type=None):
+        """
+        Gets a list type setting
+        """
         list_items = self.get_setting(setting_name, None)
         if list_items is not None:
             if isinstance(list_items, list):
@@ -20,6 +24,15 @@ class Settings:
                 self.__validate_list(parts, list_item_type)
                 return parts
         return None
+
+    def get_boolean(self, setting_name: str) -> bool:
+        """
+        Gets a boolean type setting
+        """
+        true_value = self.get_setting(setting_name, None)
+        if true_value is not None:
+            return parse_boolean(true_value)
+        return False
 
     def get_setting(self, setting_name, default_value=""):
         """

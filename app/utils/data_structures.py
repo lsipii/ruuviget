@@ -11,10 +11,3 @@ def singleton(class_):
         return instances[class_]
 
     return getinstance
-
-
-def parse_comma_separated_text_list(text: str) -> list:
-    """
-    Transforms a comma separated text list to a list
-    """
-    return list(map(lambda l: l.strip(), text.split(",")))
