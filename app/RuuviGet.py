@@ -37,8 +37,7 @@ class RuuviGet:
 
     def __handle_data(self, found_data):
         # Set data
-        if self.__if_valid_data(found_data):
-            self.__results.append(self.__data_formatter(found_data))
+        self.__results.append(found_data)
         self.__max_seconds_counter = self.__max_seconds_counter - 1
 
         # Set stop condition
@@ -47,14 +46,6 @@ class RuuviGet:
                 self.__run_flag.running = False
         if self.__max_seconds_counter < 0:
             self.__run_flag.running = False
-
-    def __if_valid_data(self, found_data: list) -> bool:
-        return isinstance(found_data, list) and len(found_data) >= 2
-
-    def __data_formatter(self, found_data: list) -> dict:
-        build = found_data[1]
-        build["mac_address"] = found_data[0]
-        return build
 
     def __get_results(self):
         return self.__results.copy()
