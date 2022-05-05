@@ -86,7 +86,13 @@ class RuuviGetator:
 
         # Set stop condition
         if isinstance(self.__macs, list) and len(self.__macs) > 0:
-            if len(self.__results) >= len(self.__macs):
+            matches_count = 0
+            for mac in self.__macs:
+                for result in self.__results:
+                    if result[0] == mac:
+                        matches_count = matches_count + 1
+
+            if matches_count == len(self.__macs):
                 self.__send_stop_signal()
         if self.__max_seconds_counter < 0:
             self.__send_stop_signal()
@@ -95,4 +101,10 @@ class RuuviGetator:
         self.__run_flag.running = False
 
     def __get_results(self):
-        return self.__results.copy()
+        results = []
+        macs_met = []
+        for result in self.__results:
+            if result[0] not in macs_met:
+                macs_met.append(result[0])
+                results.append(result.copy())
+        return results
