@@ -1,11 +1,17 @@
-# SERVER
+# Environment
 
 ```
-python -m app.server.runner
+cp .env.example .env
 ```
 
-# CLIENT
+# Server
 
 ```
-python -m app.clients.commandline.runner
+python -m app.server
+```
+
+# Client
+
+```
+python -m app.clients.commandline
 ```

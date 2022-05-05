@@ -69,7 +69,7 @@ class RuuviGetator:
             and len(requestData["mac_addresses"]) > 0
         ):
             return requestData["mac_addresses"]
-        return Settings().get_list("MAC_ADDRESSES", str)
+        return Settings().get_list("RUUVI_MAC_ADDRESSES", str)
 
     def __fetch_data(self):
         if Settings().get_boolean("RUUVI_DUMMY_DATA_MODE"):
