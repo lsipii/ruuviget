@@ -6,6 +6,10 @@ cp .env.example .env
 
 # Server
 
+## Requirements
+
+- `bluez-hcidump`
+
 ```
 python -m app.server
 ```
