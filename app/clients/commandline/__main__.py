@@ -1,16 +1,38 @@
 import click
 
 from app.services.Ruuvinator import Ruuvinator
+from app.utils.Settings import Settings
+
 
 @click.command()
-@click.argument('mac_addresses', default=None, required=False)
+@click.argument("mac_addresses", default=None, required=False)
 def execute(mac_addresses=None):
-    result = Ruuvinator().fetch(mac_addresses)
-    if "items" in result and len(result["items"]) > 0:
-        for item in result["items"]:
-            click.echo(f'{item}')
-    else:
-        click.echo(f'No results')
+    # Fetch
+    ruuvi_tags = Ruuvinator().fetch(mac_addresses)
 
-if __name__ == '__main__':
+    # Draw
+    if len(ruuvi_tags) > 0:
+
+        # Resolve name settings
+        names = Settings().get_list(
+            "RUUVI_MAC_NAMES", list_item_type=tuple, convert_to_item_type=True, default_value=[]
+        )
+        for ruuvi_tag in ruuvi_tags:
+            name = next((name_tuple for name_tuple in names if name_tuple[0] == ruuvi_tag["mac"]), None)
+            ruuvi_tag["name"] = name[1] if name is not None else None
+
+        for ruuvi_tag in ruuvi_tags:
+
+            row_values = []
+            row_values.append(f'Mac: {ruuvi_tag["mac"]}')
+            if ruuvi_tag["name"] is not None:
+                row_values.append(f'Name: {ruuvi_tag["name"]}')
+            row_values.append(f'Temperature: {ruuvi_tag["data"]["temperature"]}')
+
+            click.echo(" - ".join(row_values))
+    else:
+        click.echo(f"No results")
+
+
+if __name__ == "__main__":
     execute()
