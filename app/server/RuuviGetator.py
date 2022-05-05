@@ -107,5 +107,5 @@ class RuuviGetator:
         for result in self.__results:
             if result[0] not in macs_met:
                 macs_met.append(result[0])
-                results.append(result.copy())
+                results.append(result)
         return results
