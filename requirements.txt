@@ -8,3 +8,4 @@ ruuvitag-sensor==1.2.0
 Rx==1.6.1
 Werkzeug==2.1.2
 python-dotenv==0.20.0
+requests==2.27.1
