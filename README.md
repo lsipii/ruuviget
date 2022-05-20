@@ -48,6 +48,12 @@ python -m pip install -r requirements-cli.txt
 python -m app.clients.commandline
 ```
 
+With a loop repetition time of 5 seconds (instead the default of 60s):
+
+```
+python -m app.clients.commandline --repetition_in_seconds=5
+```
+
 ### Run with docker compose:
 
 Exec:
