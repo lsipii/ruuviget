@@ -29,7 +29,7 @@ def resolve_configuration(mac_addresses: list = None, repetition_in_seconds: int
             raise Exception("Bad argument type: repetition_in_seconds")
         repetition = repetition_in_seconds
     else:
-        repetition = Settings().get_int("RUUVI_CLI_REPETITION_IN_SECONDS", default_value=0)
+        repetition = Settings().get_int("RUUVI_CLI_REPETITION_IN_SECONDS", default_value=60)
 
     # Resolve mac settings
     macs = None

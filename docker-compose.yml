@@ -20,7 +20,5 @@ services:
     build:
       context: ./
       dockerfile: commandline-client.dockerfile
-    environment:
-      RUUVI_CLI_REPETITION_IN_SECONDS: 30
     env_file:
       - .env
