@@ -11,8 +11,8 @@ RUN apt-get update && apt-get install -y \
     sudo
 
 # App requirements
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements-server.txt .
+RUN python -m pip install --no-cache-dir -r requirements-server.txt
 
 # App
 COPY . .
