@@ -11,25 +11,28 @@ def execute(mac_addresses=None):
     # Clear term
     click.clear()
 
-    # Fetch
-    ruuvi_tags = Ruuvinator().fetch(mac_addresses)
+    try:
+        # Fetch
+        ruuvi_tags = Ruuvinator().fetch(mac_addresses)
 
-    # Draw
-    if len(ruuvi_tags) > 0:
+        # Draw
+        if len(ruuvi_tags) > 0:
 
-        # Resolve name settings
-        names = Settings().get_list(
-            "RUUVI_MAC_NAMES", list_item_type=tuple, convert_to_item_type=True, default_value=[]
-        )
-        for ruuvi_tag in ruuvi_tags:
-            name = next((name_tuple for name_tuple in names if name_tuple[0] == ruuvi_tag["mac"]), None)
-            ruuvi_tag["name"] = name[1] if name is not None else None
+            # Resolve name settings
+            names = Settings().get_list(
+                "RUUVI_MAC_NAMES", list_item_type=tuple, convert_to_item_type=True, default_value=[]
+            )
+            for ruuvi_tag in ruuvi_tags:
+                name = next((name_tuple for name_tuple in names if name_tuple[0] == ruuvi_tag["mac"]), None)
+                ruuvi_tag["name"] = name[1] if name is not None else None
 
-        for ruuvi_tag in ruuvi_tags:
-            row_values = gather_row_values(ruuvi_tag)
-            click.echo(" - ".join(row_values))
-    else:
-        click.echo(f"No results")
+            for ruuvi_tag in ruuvi_tags:
+                row_values = gather_row_values(ruuvi_tag)
+                click.echo(" - ".join(row_values))
+        else:
+            click.echo(f"No results")
+    except Exception as e:
+        click.echo(f"Failure: {e}")
 
 
 def gather_row_values(ruuvi_tag) -> list:

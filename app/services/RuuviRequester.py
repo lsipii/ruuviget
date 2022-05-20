@@ -10,7 +10,7 @@ class RuuviRequester:
         response = Requester().post(url=ruuvi_getator_endpoint_url, data={"mac_addresses": mac_addresses})
 
         if response["statusCode"] != 200:
-            raise Exception(f"Bad response: {response['statusCode']}")
+            raise Exception(f"Bad response: {response['reason']}")
 
         if "items" in response and len(response["items"]) > 0:
             return list(map(lambda item: {"mac": item[0], "data": item[1]}, response["items"]))
