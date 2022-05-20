@@ -68,10 +68,10 @@ class RuuviBluetoothGetator:
             and len(requestData["mac_addresses"]) > 0
         ):
             return requestData["mac_addresses"]
-        return Settings().get_list("RUUVI_MAC_ADDRESSES", str)
+        return Settings().get_list("RUUVI_SERVER_MAC_ADDRESSES", str)
 
     def __fetch_data(self):
-        if Settings().get_boolean("RUUVI_DUMMY_DATA_MODE"):
+        if Settings().get_boolean("RUUVI_SERVER_DUMMY_DATA_MODE"):
             for dummyData in dummy_data_set:
                 self.__handle_data(dummyData)
             self.__send_stop_signal()

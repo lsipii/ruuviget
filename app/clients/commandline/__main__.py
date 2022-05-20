@@ -36,11 +36,11 @@ def resolve_configuration(mac_addresses: list = None, repetition_in_seconds: int
     if mac_addresses is not None:
         macs = mac_addresses
     else:
-        macs = Settings().get_list("RUUVI_MAC_ADDRESSES", list_item_type=str, default_value=None)
+        macs = Settings().get_list("RUUVI_CLI_MAC_ADDRESSES", list_item_type=str, default_value=None)
 
     # Resolve mac name settings
     mac_names = Settings().get_list(
-        "RUUVI_MAC_NAMES", list_item_type=tuple, convert_to_item_type=True, default_value=[]
+        "RUUVI_CLI_MAC_NAMES", list_item_type=tuple, convert_to_item_type=True, default_value=[]
     )
 
     return dotdict(
