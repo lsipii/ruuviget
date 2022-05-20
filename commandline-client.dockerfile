@@ -1,5 +1,5 @@
-# build: docker build -t ruuviget/commandline-client -f commandline-client.dockerfile .
-# run: docker run --env-file=./.env --rm ruuviget/commandline-client
+# build: docker build -t lsipii/ruuviget-commandline-client -f commandline-client.dockerfile .
+# run: docker run --env-file=./.env --rm lsipii/ruuviget-commandline-client
 FROM python:3.10
 WORKDIR /usr/src/app
 

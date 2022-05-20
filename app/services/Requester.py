@@ -1,8 +1,8 @@
-from requests import (post, get)
+from requests import post, get
 
 
-class Requester():
-    request_timeout_secs=30
+class Requester:
+    request_timeout_secs = 30
 
     def get(self, url: str, data: dict = None, headers: dict = None) -> dict:
         return self.fetch("GET", url, data, headers)
@@ -22,16 +22,21 @@ class Requester():
             else:
                 response = post(url, json=data, headers=headers, timeout=self.request_timeout_secs)
 
-            if 'Content-Type' in response.request.headers and response.request.headers['Content-Type'] == "application/json":
+            if (
+                "Content-Type" in response.request.headers
+                and response.request.headers["Content-Type"] == "application/json"
+            ):
                 try:
                     parsedResponse = response.json()
                     if isinstance(parsedResponse, list):
                         responseData["items"] = parsedResponse
-                    else: 
+                    else:
                         responseData = parsedResponse
-                        
+
                     if "statusCode" not in responseData:
                         responseData["statusCode"] = response.status_code
+                    if "reason" not in responseData:
+                        responseData["reason"] = response.reason
                 except Exception:
                     responseData["statusCode"] = response.status_code
                     responseData["reason"] = response.reason

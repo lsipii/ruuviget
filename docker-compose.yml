@@ -3,7 +3,7 @@ version: "3.7"
 services:
   server:
     profiles: ["server"]
-    image: ruuviget/server
+    image: lsipii/ruuviget-server
     build:
       context: ./
       dockerfile: server.dockerfile
@@ -16,7 +16,7 @@ services:
 
   commandline-client:
     profiles: ["client"]
-    image: ruuviget/commandline-client
+    image: lsipii/ruuviget-commandline-client
     build:
       context: ./
       dockerfile: commandline-client.dockerfile

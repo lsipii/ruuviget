@@ -9,13 +9,12 @@ The HTTP server request handlers
 """
 # Base fallback
 @app.route("/", methods=["GET", "POST"])
-def noNothingController(path=None):
-    return app.getBadAPIGatewayResponse()
+def noNothingController():
+    return base_controller("ruuviget")
 
 
 @app.route("/<path>", methods=["GET", "POST"])
 def base_controller(path=None):
-
     if isinstance(path, str):
         request_data = app.getRequestInput()
         try:
