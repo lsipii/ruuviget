@@ -1,4 +1,3 @@
-from tokenize import Number
 from app.utils.Settings import Settings
 from ruuvitag_sensor.ruuvi import RuuviTagSensor, RunFlag
 
@@ -51,7 +50,7 @@ class RuuviBluetoothGetator:
         return self.__get_results()
 
     __results: list
-    __max_seconds_counter: Number
+    __max_seconds_counter: int
     __run_flag = None
     __macs: list
 
