@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   server:
+    profiles: ["server"]
     image: ruuviget/server
     build:
       context: ./
@@ -12,3 +13,14 @@ services:
       - /var/run/dbus/:/var/run/dbus/:z
     privileged: true
     network_mode: "host"
+
+  commandline-client:
+    profiles: ["client"]
+    image: ruuviget/commandline-client
+    build:
+      context: ./
+      dockerfile: commandline-client.dockerfile
+    environment:
+      RUUVI_CLI_REPETITION_IN_SECONDS: 30
+    env_file:
+      - .env

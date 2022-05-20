@@ -11,3 +11,14 @@ def singleton(class_):
         return instances[class_]
 
     return getinstance
+
+
+class dotdict(dict):
+    """
+    @see: https://stackoverflow.com/a/23689767
+    dot.notation access to dictionary attributes
+    """
+
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__

@@ -43,6 +43,15 @@ class Settings:
             return parse_boolean(true_value)
         return False
 
+    def get_int(self, setting_name: str, default_value=None) -> bool:
+        """
+        Gets an int type setting
+        """
+        int_value = self.get_setting(setting_name, None)
+        if int_value is not None:
+            return int(int_value)
+        return default_value
+
     def get_setting(self, setting_name, default_value=""):
         """
         Gets a setting from env values

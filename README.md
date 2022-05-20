@@ -19,7 +19,7 @@ python -m app.server
 With docker compose on a linux host:
 
 ```
-docker compose up -d
+docker compose up -d server
 ```
 
 # Client
@@ -27,6 +27,24 @@ docker compose up -d
 ```
 python -m pip install -r requirements-cli.txt
 python -m app.clients.commandline
+```
+
+With docker compose:
+
+```
+docker compose run commandline-client
+```
+
+With a loop repetition time of 5 seconds:
+
+```
+docker compose run -e RUUVI_CLI_REPETITION_IN_SECONDS=5 commandline-client
+```
+
+With loop repetition disabled:
+
+```
+docker compose run -e RUUVI_CLI_REPETITION_IN_SECONDS=0 commandline-client
 ```
 
 ## Example cli output

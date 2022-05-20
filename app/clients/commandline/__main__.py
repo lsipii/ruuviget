@@ -1,54 +1,55 @@
+from time import sleep
 import click
 
-from app.services.RuuviRequester import RuuviRequester
+from .runner import engage
 from app.utils.Settings import Settings
+from app.utils.data_structures import dotdict
 
 
 @click.command()
 @click.argument("mac_addresses", default=None, required=False)
-def execute(mac_addresses=None):
+@click.argument("repetition_in_seconds", default=None, required=False, type=int)
+def execute(mac_addresses: list = None, repetition_in_seconds: int = None):
 
-    # Clear term
-    click.clear()
-
-    try:
-        # Fetch
-        ruuvi_tags = RuuviRequester().fetch(mac_addresses)
-
-        # Draw
-        if len(ruuvi_tags) > 0:
-
-            # Resolve name settings
-            names = Settings().get_list(
-                "RUUVI_MAC_NAMES", list_item_type=tuple, convert_to_item_type=True, default_value=[]
-            )
-            for ruuvi_tag in ruuvi_tags:
-                name = next((name_tuple for name_tuple in names if name_tuple[0] == ruuvi_tag["mac"]), None)
-                ruuvi_tag["name"] = name[1] if name is not None else None
-
-            # Sort by mac
-            sorted_ruuvi_tags = sorted(ruuvi_tags, key=lambda rt: rt["mac"])
-
-            # Draw
-            for ruuvi_tag in sorted_ruuvi_tags:
-                row_values = gather_row_values(ruuvi_tag)
-                click.echo(" - ".join(row_values))
-        else:
-            click.echo(f"No results")
-    except Exception as e:
-        click.echo(f"Failure: {e}")
+    configuration = resolve_configuration(mac_addresses, repetition_in_seconds)
+    if configuration.repetition > 0:
+        while True:
+            engage(configuration)
+            sleep(configuration.repetition)
+    else:
+        engage(configuration)
 
 
-def gather_row_values(ruuvi_tag) -> list:
-    row_values = []
+def resolve_configuration(mac_addresses: list = None, repetition_in_seconds: int = None):
 
-    row_values.append(f'Mac: {ruuvi_tag["mac"]}')
-    if ruuvi_tag["name"] is not None:
-        row_values.append(f'Name: {ruuvi_tag["name"]}')
-    row_values.append(f'Temperature: {ruuvi_tag["data"]["temperature"]}')
-    row_values.append(f'Humidity: {ruuvi_tag["data"]["humidity"]}')
+    # Runtime loop repetition
+    repetition = 0
+    if repetition_in_seconds is not None:
+        if not isinstance(repetition_in_seconds, int):
+            raise Exception("Bad argument type: repetition_in_seconds")
+        repetition = repetition_in_seconds
+    else:
+        repetition = Settings().get_int("RUUVI_CLI_REPETITION_IN_SECONDS", default_value=0)
 
-    return row_values
+    # Resolve mac settings
+    macs = None
+    if mac_addresses is not None:
+        macs = mac_addresses
+    else:
+        macs = Settings().get_list("RUUVI_MAC_ADDRESSES", list_item_type=str, default_value=None)
+
+    # Resolve mac name settings
+    mac_names = Settings().get_list(
+        "RUUVI_MAC_NAMES", list_item_type=tuple, convert_to_item_type=True, default_value=[]
+    )
+
+    return dotdict(
+        {
+            "repetition": repetition,
+            "mac_addresses": macs,
+            "mac_names": mac_names,
+        }
+    )
 
 
 if __name__ == "__main__":
