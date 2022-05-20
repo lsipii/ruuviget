@@ -44,7 +44,7 @@ dummy_data_set = [
 ###
 # @see: https://github.com/ttu/ruuvitag-sensor
 ###
-class RuuviGetator:
+class RuuviBluetoothGetator:
     def execute(self, requestData: dict) -> list:
         self.__initialize(requestData)
         self.__fetch_data()

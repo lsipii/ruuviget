@@ -1,6 +1,6 @@
 import traceback
 from app.server.Flasker import Flasker
-from app.server.RuuviGetator import RuuviGetator
+from app.services.RuuviBluetoothGetator import RuuviBluetoothGetator
 
 app = Flasker(__name__)
 
@@ -20,7 +20,7 @@ def base_controller(path=None):
         request_data = app.getRequestInput()
         try:
             if path == "ruuviget":
-                result = RuuviGetator().execute(request_data)
+                result = RuuviBluetoothGetator().execute(request_data)
                 return app.generateResponse(result)
         except Exception:
             traceback.print_exc()

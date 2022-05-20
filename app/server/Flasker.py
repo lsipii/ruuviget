@@ -1,5 +1,10 @@
 from flask import Flask, request
 
+# Hide flask default banner: https://stackoverflow.com/a/72145430
+import flask.cli
+
+flask.cli.show_server_banner = lambda *args: None
+
 import json
 
 
