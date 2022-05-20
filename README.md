@@ -6,17 +6,23 @@ cp .env.example .env
 
 # Server
 
-## Requirements
+## Run natively
+
+Requirements
 
 - `bluez`
 - `bluez-hcidump`
+
+Exec:
 
 ```
 python -m pip install -r requirements-server.txt
 python -m app.server
 ```
 
-With docker compose on a linux host:
+## Run with docker compose on a linux host:
+
+Exec:
 
 ```
 docker compose up -d server
@@ -24,18 +30,24 @@ docker compose up -d server
 
 # Client
 
+## Run natively
+
+Exec:
+
 ```
 python -m pip install -r requirements-cli.txt
 python -m app.clients.commandline
 ```
 
-With docker compose:
+## Run with docker compose:
+
+Exec:
 
 ```
 docker compose run commandline-client
 ```
 
-With a loop repetition time of 5 seconds:
+With a loop repetition time of 5 seconds (instead the default of 60s):
 
 ```
 docker compose run -e RUUVI_CLI_REPETITION_IN_SECONDS=5 commandline-client
