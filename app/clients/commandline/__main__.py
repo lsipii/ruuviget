@@ -26,7 +26,11 @@ def execute(mac_addresses=None):
                 name = next((name_tuple for name_tuple in names if name_tuple[0] == ruuvi_tag["mac"]), None)
                 ruuvi_tag["name"] = name[1] if name is not None else None
 
-            for ruuvi_tag in ruuvi_tags:
+            # Sort by mac
+            sorted_ruuvi_tags = sorted(ruuvi_tags, key=lambda rt: rt["mac"])
+
+            # Draw
+            for ruuvi_tag in sorted_ruuvi_tags:
                 row_values = gather_row_values(ruuvi_tag)
                 click.echo(" - ".join(row_values))
         else:
