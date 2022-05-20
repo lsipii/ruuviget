@@ -2,7 +2,7 @@
 
 A simple ruuvitag-information API server and a commandline client for displaying tempature data.
 
-Uses the [RuuviTag Sensor Python Package](https://github.com/ttu/ruuvitag-sensor) for sensor data.
+Uses the [RuuviTag Sensor Python Package](https://github.com/ttu/ruuvitag-sensor) for sensor data
 
 # Setup
 
@@ -14,7 +14,7 @@ cp .env-example .env
 
 ## Server
 
-### Run natively
+### Run natively on a linux host
 
 Requirements
 
