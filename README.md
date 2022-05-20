@@ -18,6 +18,7 @@ cp .env-example .env
 
 Requirements
 
+- `python >= 3.10`
 - `bluez`
 - `bluez-hcidump`
 
