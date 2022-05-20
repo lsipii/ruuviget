@@ -1,6 +1,6 @@
 import click
 
-from app.services.Ruuvinator import Ruuvinator
+from app.services.RuuviRequester import RuuviRequester
 from app.utils.Settings import Settings
 
 
@@ -13,7 +13,7 @@ def execute(mac_addresses=None):
 
     try:
         # Fetch
-        ruuvi_tags = Ruuvinator().fetch(mac_addresses)
+        ruuvi_tags = RuuviRequester().fetch(mac_addresses)
 
         # Draw
         if len(ruuvi_tags) > 0:
