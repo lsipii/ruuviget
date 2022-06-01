@@ -2,6 +2,7 @@ version: "3.7"
 
 services:
   server:
+    restart: always
     profiles: ["server"]
     image: lsipii/ruuviget-server
     build:
