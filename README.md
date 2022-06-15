@@ -34,7 +34,7 @@ python -m app.server
 Exec:
 
 ```
-docker compose up -d server
+docker compose up -d server --build
 ```
 
 ## Client
