@@ -3,9 +3,11 @@ from app.utils.Settings import Settings
 
 
 class RuuviRequester:
-    def fetch(self, mac_addresses: list = []) -> list:
+    def fetch(self, client_version: str, mac_addresses: list = []) -> list:
         ruuvi_getator_endpoint_url = Settings().get_setting("RUUVI_CLI_SERVICE_URL", "http://localhost:5000/ruuviget")
-        response = Requester().post(url=ruuvi_getator_endpoint_url, data={"mac_addresses": mac_addresses})
+        response = Requester().post(
+            url=ruuvi_getator_endpoint_url, data={"client_version": client_version, "mac_addresses": mac_addresses}
+        )
 
         if response["statusCode"] != 200:
             raise Exception(f"Bad response: {response['reason']}")

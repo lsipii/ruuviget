@@ -1,38 +1,66 @@
-import click
 from app.services.RuuviRequester import RuuviRequester
+from lolcatfigletgnuplotprint import lolcat_figlet_print, plot_print, clear_screen
+from lolcatfigletgnuplotprint.utils.runtime import check_shell_apps_installed
+from app.utils.RuuviDataStore import RuuviDataStore
+from app.utils.Settings import Settings
+from .__init__ import __VERSION_NAME__
+
+HAS_GNUPLOT_INSTALLED = "gnuplot" in check_shell_apps_installed(["gnuplot"])
 
 
-def engage(configuration):
+def engage(configuration, initial_run: bool = False):
 
-    # Clear term
-    click.clear()
+    description_rows = []
+    plot_value_groups = []
 
     try:
+
+        if initial_run:
+            clear_screen("Loading..")
+
         # Fetch
-        ruuvi_tags = RuuviRequester().fetch(configuration.mac_addresses)
+        ruuvi_data_groups = ___fetch_ruuvi_data(configuration)
 
-        # Draw
-        if len(ruuvi_tags) > 0:
-            for ruuvi_tag in ruuvi_tags:
-                name = next(
-                    (name_tuple for name_tuple in configuration.mac_names if name_tuple[0] == ruuvi_tag["mac"]), None
-                )
-                ruuvi_tag["name"] = name[1] if name is not None else None
+        for indetifier in ruuvi_data_groups:
+            ruuvi_tags = ruuvi_data_groups[indetifier]
 
-            # Sort by mac
-            sorted_ruuvi_tags = sorted(ruuvi_tags, key=lambda rt: rt["mac"])
+            plot_value_groups.append(
+                {
+                    "title": indetifier,
+                    "values": list(
+                        map(
+                            lambda rv: {"value": rv["data"]["temperature"], "timestamp": rv["timestamp"]},
+                            ruuvi_tags,
+                        )
+                    ),
+                }
+            )
 
-            # Draw
-            for ruuvi_tag in sorted_ruuvi_tags:
-                row_values = gather_row_values(ruuvi_tag)
-                click.echo(" - ".join(row_values))
-        else:
-            click.echo(f"No results")
+            if len(ruuvi_tags) > 0:
+                latest_ruuvi_tag = ruuvi_tags[-1]
+                row_values = ___gather_row_values(latest_ruuvi_tag)
+                description_rows.append(" - ".join(row_values))
+            else:
+                description_rows.append(f"{indetifier}: no new results")
     except Exception as e:
-        click.echo(f"Failure: {e}")
+        description_rows.append(f"Failure: {e}")
+        raise e
+
+    # Draw
+    if not HAS_GNUPLOT_INSTALLED or Settings().get_boolean("RUUVI_CLI_SIMPLE_OUTPUT"):
+        lolcat_figlet_print(description_text="\n".join(description_rows), print_vertical_margins=False)
+    else:
+        plot = plot_print(value_groups=plot_value_groups, output_as_return_value=True)
+        lolcat_figlet_print(message=plot, description_text="\n".join(description_rows), heading_text="Temperature")
 
 
-def gather_row_values(ruuvi_tag) -> list:
+def ___fetch_ruuvi_data(configuration):
+    ruuvi_tags = RuuviRequester().fetch(client_version=__VERSION_NAME__, mac_addresses=configuration.mac_addresses)
+    RuuviDataStore(configuration).push(ruuvi_tags)
+    return RuuviDataStore().get_latest()
+
+
+def ___gather_row_values(ruuvi_tag) -> list:
     row_values = []
 
     row_values.append(f'Mac: {ruuvi_tag["mac"]}')

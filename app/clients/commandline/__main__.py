@@ -13,8 +13,10 @@ def execute(mac_addresses: list = None, repetition_in_seconds: int = None):
 
     configuration = resolve_configuration(mac_addresses, repetition_in_seconds)
     if configuration.repetition > 0:
+        initial_run = True
         while True:
-            engage(configuration)
+            engage(configuration, initial_run=initial_run)
+            initial_run = False
             sleep(configuration.repetition)
     else:
         engage(configuration)

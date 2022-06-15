@@ -34,14 +34,14 @@ class Settings:
             return parse_tuple(tuple_value, default_value)
         return default_value
 
-    def get_boolean(self, setting_name: str) -> bool:
+    def get_boolean(self, setting_name: str, default_value=False) -> bool:
         """
         Gets a boolean type setting
         """
         true_value = self.get_setting(setting_name, None)
         if true_value is not None:
             return parse_boolean(true_value)
-        return False
+        return default_value
 
     def get_int(self, setting_name: str, default_value=None) -> bool:
         """

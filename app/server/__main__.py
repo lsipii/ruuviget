@@ -18,6 +18,9 @@ def base_controller(path=None):
     if isinstance(path, str):
         request_data = app.getRequestInput()
         try:
+            if "client_version" not in request_data:
+                raise Exception("Bad request")
+
             if path == "ruuviget":
                 result = RuuviBluetoothGetator().execute(request_data)
                 return app.generateResponse(result)
