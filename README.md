@@ -74,9 +74,15 @@ With loop repetition disabled:
 docker compose run -e RUUVI_CLI_REPETITION_IN_SECONDS=0 commandline-client
 ```
 
-### Example cli output
+### Example commandline outputs
+
+**Simple:** RUUVI_CLI_SIMPLE_OUTPUT=tru
 
 ```
 Mac: A1:CD:EF:GH:IJ:K1 - Name: Konna K1 - Temperature: 23.78 - Humidity: 20.59
 Mac: A1:CD:EF:GH:IJ:K9 - Name: Doggo K9 - Temperature: 20.95 - Humidity: 18.33
 ```
+
+**Advanced:**
+
+![Advanced output example](./resources/screenshot.png)
