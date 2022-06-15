@@ -33,7 +33,7 @@ def parse_boolean(value: str) -> bool:
     if isinstance(value, bool):
         return value
     elif isinstance(value, str):
-        return value.lower() in ("yes", "true", "t", "1")
+        return value.lower() in ("yes", "true", "tru", "t", "1")
     elif isinstance(value, int):
         return value == 1
     return False
