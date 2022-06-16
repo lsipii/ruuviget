@@ -57,7 +57,7 @@ def engage(configuration, initial_run: bool = False):
 def ___fetch_ruuvi_data(configuration):
     ruuvi_tags = RuuviRequester().fetch(client_version=__VERSION_NAME__, mac_addresses=configuration.mac_addresses)
     RuuviDataStore(configuration).push(ruuvi_tags)
-    return RuuviDataStore().get_latest()
+    return RuuviDataStore().get()
 
 
 def ___gather_row_values(ruuvi_tag) -> list:

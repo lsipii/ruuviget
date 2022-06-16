@@ -7,7 +7,7 @@ class RuuviDataStore:
     def __init__(self, configuration) -> None:
         self.___mac_names = configuration.mac_names
         self.___value_groups = {}
-        self.___max_value_pool_size = 60
+        self.___max_value_pool_size = 3600
 
     def push(self, ruuvi_tags):
         timestampNow = get_datetime_now().timestamp()
@@ -28,8 +28,5 @@ class RuuviDataStore:
                     -self.___max_value_pool_size :
                 ]
 
-    def get_latest(self, limit: int = 30):
-        latests = {}
-        for value_group_ident in self.___value_groups:
-            latests[value_group_ident] = self.___value_groups[value_group_ident][-limit:]
-        return latests
+    def get(self):
+        return self.___value_groups
