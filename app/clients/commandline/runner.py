@@ -50,11 +50,7 @@ def engage(configuration, initial_run: bool = False):
     if not HAS_GNUPLOT_INSTALLED or Settings().get_boolean("RUUVI_CLI_SIMPLE_OUTPUT"):
         lolcat_figlet_print(description_text="\n".join(description_rows), print_vertical_margins=False)
     else:
-        plot = plot_print(
-            value_groups=plot_value_groups,
-            output_only_as_return_value=True,
-            sample_interval_secs=configuration.repetition,
-        )
+        plot = plot_print(value_groups=plot_value_groups, output_only_as_return_value=True)
         lolcat_figlet_print(message=plot, description_text="\n".join(description_rows), heading_text="Temperature")
 
 
