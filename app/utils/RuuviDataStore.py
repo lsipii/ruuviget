@@ -10,7 +10,7 @@ class RuuviDataStore:
         self.___max_value_pool_size = 3600
 
     def push(self, ruuvi_tags):
-        timestampNow = get_datetime_now().timestamp()
+        timestampNow = int(get_datetime_now().timestamp())
         for ruuvi_tag in ruuvi_tags:
             name = next((name_tuple for name_tuple in self.___mac_names if name_tuple[0] == ruuvi_tag["mac"]), None)
             ruuvi_tag["name"] = name[1] if name is not None else None
