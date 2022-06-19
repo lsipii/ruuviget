@@ -70,6 +70,8 @@ class Settings:
                 if not isinstance(list_item, list_item_type):
                     if convert_to_item_type:
                         list_items[index] = ensure_type(list_item, list_item_type)
+                        if not isinstance(list_items[index], list_item_type):
+                            raise Exception(f"Bad list input: could not ensure data type: {list_item_type}")
                     else:
                         raise Exception("Bad list input")
 
