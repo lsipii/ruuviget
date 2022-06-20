@@ -7,8 +7,8 @@ from app.utils.data_structures import dotdict
 
 
 @click.command()
-@click.option("--mac_addresses", "-m", default=None, required=False)
-@click.option("--repetition_in_seconds", "-r", default=None, required=False, type=int)
+@click.option("--mac-addresses", "-m", default=None, required=False)
+@click.option("--repetition-in-seconds", "-r", default=None, required=False, type=int)
 def execute(mac_addresses: list = None, repetition_in_seconds: int = None):
 
     configuration = resolve_configuration(mac_addresses, repetition_in_seconds)
