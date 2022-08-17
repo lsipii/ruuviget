@@ -14,5 +14,7 @@ class RuuviRequester:
             raise Exception(f"Bad response: {response['reason']}")
 
         if "items" in response and len(response["items"]) > 0:
+            if isinstance(response["items"][0], str):
+                return response["items"]
             return list(map(lambda item: {"mac": item[0], "data": item[1]}, response["items"]))
         return []
