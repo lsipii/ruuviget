@@ -3,7 +3,7 @@ from lolcatfigletgnuplotprint import lolcat_figlet_print, plot_print, clear_scre
 from lolcatfigletgnuplotprint.utils.runtime import check_shell_apps_installed
 from app.utils.RuuviDataStore import RuuviDataStore
 from app.utils.Settings import Settings
-from .__init__ import __VERSION_NAME__
+from app.clients.commandline import __VERSION_NAME__
 
 HAS_GNUPLOT_INSTALLED = "gnuplot" in check_shell_apps_installed(["gnuplot"])
 
@@ -52,6 +52,10 @@ def engage(configuration, initial_run: bool = False):
     else:
         plot = plot_print(value_groups=plot_value_groups, output_only_as_return_value=True)
         lolcat_figlet_print(message=plot, description_text="\n".join(description_rows), heading_text="Temperature")
+
+
+def fetch_ruuvi_macs():
+    return RuuviRequester().fetch(client_version=__VERSION_NAME__, action="fetch_macs")
 
 
 def ___fetch_ruuvi_data(configuration):

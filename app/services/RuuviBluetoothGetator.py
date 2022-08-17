@@ -45,14 +45,34 @@ dummy_data_set = [
 ###
 class RuuviBluetoothGetator:
     def execute(self, requestData: dict) -> list:
-        self.__initialize(requestData)
-        self.__fetch_data()
-        return self.__get_results()
+        action = requestData["action"] if "action" in requestData else "fetch_ruuvis"
+
+        match action:
+            case "fetch_ruuvis":
+                return self.__fetch_ruuvis(requestData)
+            case "fetch_macs":
+                return self.__fetch_macs()
+
+        raise Exception(f"Unknown action: {action}")
 
     __results: list
     __max_seconds_counter: int
     __run_flag = None
     __macs: list
+
+    def __fetch_ruuvis(self, requestData: dict) -> list:
+        self.__initialize(requestData)
+        self.__fetch_data()
+        return self.__get_results()
+
+    def __fetch_macs(self) -> list:
+        # Gets macs for 5 seconds
+        macs_data = RuuviTagSensor.get_data_for_sensors(macs=None)
+
+        macs = []
+        for result in macs_data:
+            macs.append(result[0])
+        return macs
 
     def __initialize(self, requestData: dict):
         self.__results = []

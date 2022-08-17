@@ -1,7 +1,7 @@
 from time import sleep
 import click
 
-from .runner import engage
+from app.clients.commandline.runner import engage, fetch_ruuvi_macs
 from app.utils.Settings import Settings
 from app.utils.data_structures import dotdict
 
@@ -9,17 +9,22 @@ from app.utils.data_structures import dotdict
 @click.command()
 @click.option("--mac-addresses", "-m", default=None, required=False)
 @click.option("--repetition-in-seconds", "-r", default=None, required=False, type=int)
-def execute(mac_addresses: list = None, repetition_in_seconds: int = None):
+@click.option("--fetch-macs", "-f", default=False, required=False, type=bool)
+def execute(mac_addresses: list = None, repetition_in_seconds: int = None, fetch_macs: bool = False):
 
-    configuration = resolve_configuration(mac_addresses, repetition_in_seconds)
-    if configuration.repetition > 0:
-        initial_run = True
-        while True:
-            engage(configuration, initial_run=initial_run)
-            initial_run = False
-            sleep(configuration.repetition)
+    if fetch_macs:
+        macs = fetch_ruuvi_macs()
+        print(macs)
     else:
-        engage(configuration)
+        configuration = resolve_configuration(mac_addresses, repetition_in_seconds)
+        if configuration.repetition > 0:
+            initial_run = True
+            while True:
+                engage(configuration, initial_run=initial_run)
+                initial_run = False
+                sleep(configuration.repetition)
+        else:
+            engage(configuration)
 
 
 def resolve_configuration(mac_addresses: list = None, repetition_in_seconds: int = None):
