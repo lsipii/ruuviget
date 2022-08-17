@@ -9,7 +9,7 @@ from app.utils.data_structures import dotdict
 @click.command()
 @click.option("--mac-addresses", "-m", default=None, required=False)
 @click.option("--repetition-in-seconds", "-r", default=None, required=False, type=int)
-@click.option("--fetch-macs", "-f", default=False, required=False, type=bool)
+@click.option("--fetch-macs", "-f", is_flag=True, required=False)
 def execute(mac_addresses: list = None, repetition_in_seconds: int = None, fetch_macs: bool = False):
 
     if fetch_macs:
