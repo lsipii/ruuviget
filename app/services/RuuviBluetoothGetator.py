@@ -66,9 +66,9 @@ class RuuviBluetoothGetator:
         return self.__get_results()
 
     def __fetch_macs(self) -> list:
-        # Gets macs for 5 seconds
+        # Gets macs for 10 seconds
         macs = []
-        results = RuuviTagSensor.get_data_for_sensors(macs=None)
+        results = RuuviTagSensor.get_data_for_sensors(macs=None, search_duratio_sec=10)
         for mac in results:
             macs.append(mac)
         return macs
